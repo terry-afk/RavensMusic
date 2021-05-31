@@ -1,0 +1,25 @@
+{
+  "name": "ravensmusic",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/terry-afk/RavensMusic.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/terry-afk/RavensMusic/issues"
+  },
+  "homepage": "https://github.com/terry-afk/RavensMusic#readme",
+  "dependencies": {
+    "discord.js": "^12.5.3",
+    "discord.js-commando": "github:discordjs/Commando",
+    "nodemon": "^2.0.7"
+  }
+}
