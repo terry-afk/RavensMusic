@@ -12,6 +12,9 @@ module.exports = class ResumeCommand extends Command {
     }
 
     async run(message) {
+        /**
+         * @type StreamDispatcher
+         */
         const dispatcher = message.client.server.dispatcher;
         if (!message.member.voice.channel) {
             return message.say(":x: You must be in a vocal channel.");
