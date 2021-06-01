@@ -12,6 +12,7 @@ client.registry
     .registerDefaultGroups()
     .registerDefaultCommands()
     .registerGroup('music', 'Music')
+    .registerGroup('utils', 'Utils')
     .registerCommandsIn(path.join(__dirname, 'commands'));
 
 client.once('ready', () => {
