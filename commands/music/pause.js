@@ -1,6 +1,4 @@
-const { VoiceConnection } = require("discord.js");
 const { Command, CommandoMessage } = require("discord.js-commando");
-const ytdl = require("ytdl-core-discord");
 
 module.exports = class PlayCommand extends Command {
     constructor(client) {
@@ -8,7 +6,7 @@ module.exports = class PlayCommand extends Command {
             name: 'pause',
             group: 'music',
             memberName: 'pause',
-            description: 'Pause a current music.',
+            description: 'Pause the current music.',
         })
     }
 
