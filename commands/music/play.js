@@ -9,7 +9,7 @@ module.exports = class PlayCommand extends Command {
             aliases: ['p'],
             group: 'music',
             memberName: 'play',
-            description: 'Play a music from Youtube',
+            description: 'Play a music from Youtube.',
             args: [
                 {
                     key: 'query',
@@ -28,6 +28,8 @@ module.exports = class PlayCommand extends Command {
 
     async runVideo(message, connection, video) {
         const dispatcher = connection.play(await ytdl(video, { filter: 'audioonly' }), { type: 'opus' });
+
+        message.client.server.dispatcher = dispatcher;
 
         dispatcher.on('finish', () => {
             message.member.voice.channel.leave();
