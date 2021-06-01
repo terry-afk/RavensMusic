@@ -11,7 +11,6 @@ client.registry
     .registerDefaultTypes()
     .registerDefaultGroups()
     .registerDefaultCommands()
-    .registerGroup('music', 'Music')
     .registerGroup('utils', 'Utils')
     .registerCommandsIn(path.join(__dirname, 'commands'));
 
