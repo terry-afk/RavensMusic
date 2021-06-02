@@ -6,7 +6,7 @@ module.exports = class JoinCommand extends Command {
             name: 'leave',
             group: 'utils',
             memberName: 'leave',
-            description: 'Join the current channel.',
+            description: 'Leave the current channel.',
         })
     }
 
