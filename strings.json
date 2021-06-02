@@ -1,0 +1,8 @@
+{
+    "BotNotInVoiceChanel": ":x: I'm not connected. Please use `!join` to add me.",
+    "UserNotConnected": ":x: You must be in a vocal channel.",
+    "AddedToQueue": "Added to the queue :thumbsup:",
+    "PageDoesntExist": ":x: This page doesn't exist !",
+    "Pause": ":pause_button: Pause",
+    "Resume": "Resuming :notes:"
+}

@@ -1,6 +1,7 @@
-const { VoiceConnection } = require("discord.js");
+const { VoiceConnection, User } = require("discord.js");
 const { Command, CommandoMessage } = require("discord.js-commando");
 const ytdl = require("ytdl-core-discord");
+const { UserNotConnected, AddedToQueue } = require('../../strings.json');
 
 module.exports = class PlayCommand extends Command {
     constructor(client) {
@@ -24,13 +25,13 @@ module.exports = class PlayCommand extends Command {
         const server = message.client.server;
 
         if (!message.member.voice.channel) {
-            return message.say(":x: You must be in a vocal channel.");
+            return message.say(UserNotConnected);
         }
 
         await message.member.voice.channel.join().then((connection) => {
             if (server.currentVideo.url != "") {
                 server.queue.push({ title: "", url: query });
-                return message.say("Added to the queue :thumbsup:");
+                return message.say(AddedToQueue);
             }
             server.currentVideo = { title: "", url: query };
             this.runVideo(message, connection, query);
