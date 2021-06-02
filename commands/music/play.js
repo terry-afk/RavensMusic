@@ -21,18 +21,32 @@ module.exports = class PlayCommand extends Command {
     }
 
     async run(message, { query }) {
+        const server = message.client.server;
+
         await message.member.voice.channel.join().then((connection) => {
+            if (server.currentVideo.url != "") {
+                server.queue.push({ title: "", url: query });
+                return message.say("Added to the queue :thumbsup:");
+            }
+            server.currentVideo = { title: "", url: query };
             this.runVideo(message, connection, query);
         });
     }
 
     async runVideo(message, connection, video) {
+        const server = message.client.server;
         const dispatcher = connection.play(await ytdl(video, { filter: 'audioonly' }), { type: 'opus' });
 
-        message.client.server.dispatcher = dispatcher;
+        server.queue.shift();
+        server.dispatcher = dispatcher;
 
         dispatcher.on('finish', () => {
-            message.member.voice.channel.leave();
+            if (server.queue[0]) {
+                server.currentVideo = server.queue[0];
+                return this.runVideo(message, connection, server.currentVideo.url);
+            }
         });
+
+        return message.say("Now playing `" + server.currentVideo.title + "`");
     }
 }
