@@ -1,5 +1,6 @@
 const { Command, CommandoMessage } = require("discord.js-commando");
 const { StreamDispatcher } = require("discord.js");
+const { UserNotConnected,BotNotInVoiceChanel, Pause } = require('../../strings.json');
 
 module.exports = class PauseCommand extends Command {
     constructor(client) {
@@ -17,17 +18,17 @@ module.exports = class PauseCommand extends Command {
          */
         const dispatcher = message.client.server.dispatcher;
         if (!message.member.voice.channel) {
-            return message.say(":x: You must be in a vocal channel.");
+            return message.say(UserNotConnected);
         }
 
         if (!message.client.voice.connections.first()) {
-            return message.say(":x: I'm not connected. Please use `join` to add me.");
+            return message.say(BotNotInVoiceChanel);
         }
 
         if (dispatcher) {
             dispatcher.pause();
         }
 
-        return message.say(":pause_button: Pause")
+        return message.say(Pause);
     }
 }

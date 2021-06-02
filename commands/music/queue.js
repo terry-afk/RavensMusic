@@ -1,5 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 const { Command, CommandoMessage } = require("discord.js-commando");
+const { BotNotInVoiceChanel, PageDoesntExist } = require('../../strings.json');
 
 module.exports = class QueueCommand extends Command {
     constructor(client) {
@@ -24,7 +25,7 @@ module.exports = class QueueCommand extends Command {
         const server = message.client.server;
 
         if (!message.client.voice.connections.first()) {
-            return message.say(":x: I'm not connected. Please use `join` to add me.");
+            return message.say(BotNotInVoiceChanel);
         }
 
         const numberOfItems = 10;
@@ -47,7 +48,7 @@ module.exports = class QueueCommand extends Command {
             }
 
             if (page < 0 || page > totalPages) {
-                return message.say(":x: This page doesn't exist !");
+                return message.say(PageDoesntExist);
             }
 
             if (queueLength - startingItem < numberOfItems) {
