@@ -23,6 +23,10 @@ module.exports = class PlayCommand extends Command {
     async run(message, { query }) {
         const server = message.client.server;
 
+        if (!message.member.voice.channel) {
+            return message.say(":x: You must be in a vocal channel.");
+        }
+
         await message.member.voice.channel.join().then((connection) => {
             if (server.currentVideo.url != "") {
                 server.queue.push({ title: "", url: query });
@@ -47,6 +51,6 @@ module.exports = class PlayCommand extends Command {
             }
         });
 
-        return message.say("Now playing `" + server.currentVideo.title + "`");
+        return message.say("Now playing `" + server.currentVideo.title + "` :notes:");
     }
 }
