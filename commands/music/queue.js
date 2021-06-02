@@ -1,6 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 const { Command, CommandoMessage } = require("discord.js-commando");
-const { BotNotInVoiceChanel, PageDoesntExist } = require('../../strings.json');
+const { BotNotInVoiceChanel, PageDoesntExist, EmptyQueue } = require('../../strings.json');
 
 module.exports = class QueueCommand extends Command {
     constructor(client) {
@@ -35,12 +35,11 @@ module.exports = class QueueCommand extends Command {
         var itemsPerPage = startingItem + numberOfItems;
         var totalPages = 1;
 
-        var embed = new MessageEmbed()
-            .setTitle(`Wating queue for ${message.author.username}`)
-            .setColor("BLUE")
-            .addField("Now playing :", server.currentVideo.url);
-
         if (queueLength > 0) {
+            var embed = new MessageEmbed()
+                .setTitle(`Wating queue for ${message.author.username}`)
+                .setColor("BLUE")
+                .addField("Now playing :", server.currentVideo.url);
             var value = "";
 
             if (queueLength > numberOfItems) {
@@ -60,9 +59,11 @@ module.exports = class QueueCommand extends Command {
                 value += "`" + (i + 1) + ".` " + video.url + "\n";
             }
             embed.addField("Coming :", value);
-        }
-        embed.setFooter(`Page ${page}/${totalPages}`);
+            embed.setFooter(`Page ${page}/${totalPages}`);
 
-        return message.say(embed);
+            return message.say(embed);
+        }
+
+        return message.say(EmptyQueue);
     }
 }

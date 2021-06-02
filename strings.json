@@ -3,6 +3,8 @@
     "UserNotConnected": ":x: You must be in a vocal channel.",
     "AddedToQueue": "Added to the queue :thumbsup:",
     "PageDoesntExist": ":x: This page doesn't exist !",
-    "Pause": ":pause_button: Pause",
-    "Resume": "Resuming :notes:"
+    "Pause": ":pause_button: Pause.",
+    "Resume": ":notes: Resuming.",
+    "Skip": ":fast_forward: Skipping.",
+    "EmptyQueue": ":x: There is nothing in the waiting queue !"
 }

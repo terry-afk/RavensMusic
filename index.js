@@ -18,8 +18,9 @@ client.registry
 
 client.server = {
     queue: [],
-    currentVideo: { title: "", url: "" },
-    dispatcher: null
+    currentVideo: { title: "Noting right now !", url: "" },
+    dispatcher: null,
+    connection: null
 };
 
 client.once('ready', () => {

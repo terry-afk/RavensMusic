@@ -44,6 +44,7 @@ module.exports = class PlayCommand extends Command {
 
         server.queue.shift();
         server.dispatcher = dispatcher;
+        server.connection = connection;
 
         dispatcher.on('finish', () => {
             if (server.queue[0]) {
