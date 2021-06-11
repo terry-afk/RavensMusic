@@ -27,7 +27,7 @@ module.exports = class PlayCommand extends Command {
         server.queue.shift();
 
         if (!server.queue[0]) {
-            server.currentVideo = {title: "Noting right now !", url: ""};
+            server.currentVideo = {title: "Nothing right now !", url: ""};
             return message.say(EmptyQueue);
         }
 
