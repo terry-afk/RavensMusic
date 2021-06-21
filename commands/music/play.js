@@ -1,7 +1,9 @@
 const { VoiceConnection, User } = require("discord.js");
 const { Command, CommandoMessage } = require("discord.js-commando");
-const ytdl = require("ytdl-core-discord");
 const { UserNotConnected, AddedToQueue } = require('../../strings.json');
+const { key } = require("../../config.json");
+const ytdl = require("ytdl-core");
+const ytsr = require("youtube-search");
 
 module.exports = class PlayCommand extends Command {
     constructor(client) {
@@ -29,18 +31,25 @@ module.exports = class PlayCommand extends Command {
         }
 
         await message.member.voice.channel.join().then((connection) => {
-            if (server.currentVideo.url != "") {
-                server.queue.push({ title: "", url: query });
-                return message.say(AddedToQueue);
-            }
-            server.currentVideo = { title: "", url: query };
-            this.runVideo(message, connection, query);
+
+            ytsr(query, { key: key, maxResults: 1, type: "video" }).then((results) => {
+                if (results.results[0]) {
+                    const foundVideo = { title: results.results[0].title, url: results.results[0].link };
+
+                    if (server.currentVideo.url != "") {
+                        server.queue.push(foundVideo);
+                        return message.say("`" + foundVideo.title + "`" + AddedToQueue);
+                    }
+                    server.currentVideo = foundVideo;
+                }
+                this.runVideo(message, connection);
+            })
         });
     }
 
-    async runVideo(message, connection, video) {
+    async runVideo(message, connection) {
         const server = message.client.server;
-        const dispatcher = connection.play(await ytdl(video, { filter: 'audioonly' }), { type: 'opus' });
+        const dispatcher = connection.play(await ytdl(server.currentVideo.url, { filter: 'audioonly' }));
 
         server.queue.shift();
         server.dispatcher = dispatcher;

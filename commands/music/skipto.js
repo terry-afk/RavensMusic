@@ -1,18 +1,25 @@
 const { Command, CommandoMessage } = require("discord.js-commando");
 const ytdl = require("ytdl-core");
-const { UserNotConnected, BotNotInVoiceChanel, Skip, EmptyQueue } = require('../../strings.json');
+const { UserNotConnected, BotNotInVoiceChanel, Skip, NotEnough } = require('../../strings.json');
 
-module.exports = class SkipCommand extends Command {
+module.exports = class SkipToCommand extends Command {
     constructor(client) {
         super(client, {
-            name: 'skip',
+            name: 'skipto',
             group: 'music',
-            memberName: 'skip',
-            description: 'Skip the current music.',
+            memberName: 'skipto',
+            description: 'Skip to the desired music in the queue !',
+            args: [
+                {
+                    key: "index",
+                    prompt: "To which position do you want to jump ?",
+                    type: "integer"
+                },
+            ]
         })
     }
 
-    async run(message) {
+    async run(message, { index }) {
         const voiceChannel = message.member.voice.channel;
         const server = message.client.server;
 
@@ -24,14 +31,16 @@ module.exports = class SkipCommand extends Command {
             return message.say(BotNotInVoiceChanel);
         }
 
-        if (!server.queue[0]) {
+        index--;
+
+        if (!server.queue[index]) {
             server.currentVideo = {title: "Nothing right now !", url: ""};
-            return message.say(EmptyQueue);
+            return message.say(NotEnough);
         }
 
-        server.currentVideo = server.queue[0];
+        server.currentVideo = server.queue[index];
         server.dispatcher = server.connection.play(await ytdl(server.currentVideo.url, { filter: 'audioonly' }));
-        server.queue.shift();
+        server.queue.splice(index, 1);
 
         return message.say(Skip);
     }

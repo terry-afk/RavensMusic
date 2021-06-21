@@ -13,6 +13,7 @@ module.exports = class JoinCommand extends Command {
 
     async run(message) {
         const voiceChannel = message.member.voice.channel;
+        const server = message.client.server;
 
         if (!voiceChannel) {
             return message.say(UserNotConnected);
@@ -21,9 +22,11 @@ module.exports = class JoinCommand extends Command {
         if (!message.client.voice.connections.first()) {
             return message.say(BotNotInVoiceChanel);
         }
+        server.queue.splice(0, server.queue.length);
+        server.currentVideo = { title: "Noting right now !", url: "" };
+        message.say("Cleaning the queue !")
 
         await voiceChannel.leave();
-
         return message.say(":thumbsup: Leaving " + "`" + voiceChannel.name + "`")
     }
 }

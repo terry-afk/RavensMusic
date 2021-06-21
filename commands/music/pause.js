@@ -1,6 +1,6 @@
 const { Command, CommandoMessage } = require("discord.js-commando");
 const { StreamDispatcher } = require("discord.js");
-const { UserNotConnected,BotNotInVoiceChanel, Pause } = require('../../strings.json');
+const { UserNotConnected, BotNotInVoiceChanel, Pause } = require('../../strings.json');
 
 module.exports = class PauseCommand extends Command {
     constructor(client) {
