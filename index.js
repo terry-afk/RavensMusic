@@ -13,6 +13,7 @@ client.registry
     .registerDefaultCommands()
     .registerGroup('music', 'Music')
     .registerGroup('utils', 'Utils')
+    .registerGroup('api', 'API')
     .registerCommandsIn(path.join(__dirname, 'commands'));
 
 client.server = {
