@@ -1,5 +1,5 @@
 const { Command, CommandoMessage } = require("discord.js-commando");
-const ytdl = require("ytdl-core");
+const ytdl = require("ytdl-core-discord");
 const { UserNotConnected, BotNotInVoiceChanel, Skip, EmptyQueue } = require('../../strings.json');
 
 module.exports = class SkipCommand extends Command {
@@ -30,7 +30,7 @@ module.exports = class SkipCommand extends Command {
         }
 
         server.currentVideo = server.queue[0];
-        server.dispatcher = server.connection.play(await ytdl(server.currentVideo.url, { filter: 'audioonly' }));
+        server.dispatcher = server.connection.play(ytdl(server.currentVideo.url, { filter: 'audioonly' }), { type: "opus" });
         server.queue.shift();
 
         return message.say(Skip);

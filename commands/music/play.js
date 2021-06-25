@@ -2,8 +2,7 @@ const { VoiceConnection, User } = require("discord.js");
 const { Command, CommandoMessage } = require("discord.js-commando");
 const { UserNotConnected, AddedToQueue } = require('../../strings.json');
 const { key } = require("../../config.json");
-const ytdl = require("ytdl-core");
-const ytsr = require("youtube-search");
+const ytdl = require("ytdl-core-discord");
 
 module.exports = class PlayCommand extends Command {
     constructor(client) {
@@ -31,25 +30,20 @@ module.exports = class PlayCommand extends Command {
         }
 
         await message.member.voice.channel.join().then((connection) => {
+            const video = {title: "", url: query}
 
-            ytsr(query, { key: key, maxResults: 1, type: "video" }).then((results) => {
-                if (results.results[0]) {
-                    const foundVideo = { title: results.results[0].title, url: results.results[0].link };
-
-                    if (server.currentVideo.url != "") {
-                        server.queue.push(foundVideo);
-                        return message.say("`" + foundVideo.title + "`" + AddedToQueue);
-                    }
-                    server.currentVideo = foundVideo;
-                }
-                this.runVideo(message, connection);
-            })
+            if (server.currentVideo.url != "") {
+                server.queue.push(video);
+                return message.say("`" + video.url + "`" + AddedToQueue);
+            }
+            server.currentVideo = video;
+            this.runVideo(message, connection, query);
         });
     }
 
-    async runVideo(message, connection) {
+    async runVideo(message, connection, query) {
         const server = message.client.server;
-        const dispatcher = connection.play(await ytdl(server.currentVideo.url, { filter: 'audioonly' }));
+        const dispatcher = connection.play(ytdl(query, { filter: 'audioonly' }), { type: "opus" });
 
         server.queue.shift();
         server.dispatcher = dispatcher;
@@ -58,8 +52,10 @@ module.exports = class PlayCommand extends Command {
         dispatcher.on('finish', () => {
             if (server.queue[0]) {
                 server.currentVideo = server.queue[0];
-                return this.runVideo(message, connection, server.currentVideo.url);
+                return this.runVideo(message, connection);
             }
+            server.currentVideo = { title: "Noting right now !", url: "" }
+            return message.say("Queue ended !");
         });
 
         return message.say("Now playing `" + server.currentVideo.title + "` :notes:");

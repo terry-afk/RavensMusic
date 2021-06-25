@@ -28,6 +28,10 @@ module.exports = class QueueCommand extends Command {
             return message.say(BotNotInVoiceChanel);
         }
 
+        if (server.currentVideo.url == "") {
+            return message.say(EmptyQueue);
+        }
+
         const numberOfItems = 10;
         const startingItem = (page - 1) * numberOfItems;
         const queueLength = server.queue.length;
@@ -35,11 +39,12 @@ module.exports = class QueueCommand extends Command {
         var itemsPerPage = startingItem + numberOfItems;
         var totalPages = 1;
 
-        if (queueLength > 0) {
-            var embed = new MessageEmbed()
+        var embed = new MessageEmbed()
                 .setTitle(`Wating queue for ${message.author.username}`)
                 .setColor("BLUE")
-                .addField("Now playing :", server.currentVideo.url);
+                .addField("Now playing :", server.currentVideo.title);
+
+        if (queueLength > 0) {
             var value = "";
 
             if (queueLength > numberOfItems) {
@@ -56,14 +61,12 @@ module.exports = class QueueCommand extends Command {
 
             for (let i = startingItem; i < itemsPerPage; i++) {
                 const video = server.queue[i];
-                value += "`" + (i + 1) + ".` " + video.url + "\n";
+                value += "`" + (i + 1) + ".` " + video.title + "\n";
             }
             embed.addField("Coming :", value);
-            embed.setFooter(`Page ${page}/${totalPages}`);
-
-            return message.say(embed);
         }
+        embed.setFooter(`Page ${page}/${totalPages}`);
 
-        return message.say(EmptyQueue);
+        return message.say(embed);
     }
 }
