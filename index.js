@@ -12,7 +12,14 @@ client.registry
     .registerDefaultGroups()
     .registerDefaultCommands()
     .registerGroup('music', 'Music')
+    .registerGroup('utils', 'Utils')
     .registerCommandsIn(path.join(__dirname, 'commands'));
+
+client.server = {
+    queue: [],
+    currentVideo: { title: "", url: "" },
+    dispatcher: null
+};
 
 client.once('ready', () => {
     console.log(`Connected as ${client.user.tag} - (${client.user.id})`);
